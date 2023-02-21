@@ -6,4 +6,4 @@ nav:
 
 # 基本使用样例
 
-<code src="./index.jsx"></code>
+<code src="./index.jsx" compact="true"></code>
