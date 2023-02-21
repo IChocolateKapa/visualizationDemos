@@ -8,18 +8,17 @@ export default () => {
     let w = canvas.clientWidth
     let h = 400
     let scene = new THREE.Scene()
-    let camera = new THREE.PerspectiveCamera(80, w / h, 1, 1000)
+    let camera = new THREE.PerspectiveCamera(75, w / h, 0.1, 1000)
     let renderer = new THREE.WebGLRenderer()
     renderer.setSize(w, h)
     canvas.appendChild(renderer.domElement)
 
     let geometry = new THREE.BoxGeometry(1, 1, 1)
     const material = new THREE.MeshBasicMaterial({
-      color: 'red',
-      transparent: true
+      color: '0x00ff00',
     })
     const cube = new THREE.Mesh(geometry, material)
-    cube.position.set(100, 100, 100)
+    cube.position.set(1, 1, 1)
 
     scene.add(cube)
 

@@ -7,7 +7,7 @@ hero:
     - text: L7Demos
       link: /l7/point
     - text: threeDemos
-      link: /three/basic
+      link: /three/cube
 features:
   - title: 点图层
     emoji: 💎
