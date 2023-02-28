@@ -1,7 +1,8 @@
 ---
-order: 2
+order: 3
 ---
 
-# Rotated Cube
+# Light
+
 
 <code src="./index.jsx" compact="true"></code>

@@ -1,10 +1,10 @@
 ---
 order: 3
-nav:
-  title: ThreeDemos
 ---
 
 # Light
+
+## 光源分类
 
 
 <code src="./index.jsx" compact="true"></code>

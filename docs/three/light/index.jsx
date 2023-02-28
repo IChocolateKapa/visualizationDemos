@@ -15,7 +15,7 @@ export default () => {
     let scene = new THREE.Scene()
 
     let camera = new THREE.PerspectiveCamera(75, w / h, 0.1, 1000)
-    camera.position.set(-30, 40, 50)
+    camera.position.set(-30, 30, 60)
 
     let geometry = new THREE.BoxGeometry(10, 10, 10)
     const material = new THREE.MeshLambertMaterial({
@@ -23,15 +23,16 @@ export default () => {
       opacity: 0.5
     })
     const cube = new THREE.Mesh(geometry, material)
-    cube.position.set(0, 0, 0)
+    cube.position.set(-8, 3, 30)
     cube.castShadow = true
     scene.add(cube)
 
-    let planeGeometry = new THREE.PlaneGeometry(100, 100)
+    let planeGeometry = new THREE.PlaneGeometry(300, 400)
     let planeMaterial = new THREE.MeshLambertMaterial({color: '#ccc'})
     let plane = new THREE.Mesh(planeGeometry, planeMaterial)
     plane.rotation.x = -0.5 * Math.PI
     plane.position.set(15, -20, 0)
+    plane.receiveShadow = true
     scene.add(plane)
 
     let light = new THREE.AmbientLight('#aaa')
@@ -66,5 +67,10 @@ export default () => {
     render()
 
   }, [])
-  return <div id="canvas" />
+  return <div className="container">
+    <div id="toolbar">
+
+    </div>
+    <div id="canvas"></div>
+  </div>
 }
