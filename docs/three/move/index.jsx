@@ -18,6 +18,7 @@ export default () => {
 
     let scene = new THREE.Scene()
 
+    // 创建立方体
     let geometry = new THREE.BoxGeometry(10, 10, 10)
     const material = new THREE.MeshLambertMaterial({
       color: 'pink',
@@ -28,6 +29,7 @@ export default () => {
     cube.castShadow = true
     scene.add(cube)
 
+    // 创建地面
     let planeGeometry = new THREE.PlaneGeometry(200, 200)
     let planeMaterial = new THREE.MeshLambertMaterial({color: '#ccc'})
     let plane = new THREE.Mesh(planeGeometry, planeMaterial)
@@ -35,18 +37,6 @@ export default () => {
     plane.position.set(10, -20, 0)
     plane.receiveShadow = true
     scene.add(plane)
-
-    let light = new THREE.AmbientLight('#fff')
-    scene.add(light)
-
-    let spotLight = new THREE.SpotLight('#eee')
-    spotLight.position.set(-10, 10, 10)
-    spotLight.castShadow = true
-    spotLight.shadow.mapSize = new THREE.Vector2(1024, 1024)
-    spotLight.shadow.camera.near = 40
-    spotLight.shadow.camera.far = 150
-    spotLight.lookAt(0,0,0)
-    scene.add(spotLight)
 
     // 创建一个球体
     const sphereGeometry = new THREE.SphereGeometry(4, 20, 20)
@@ -62,14 +52,17 @@ export default () => {
 
     // 保存希望被GUI改变的属性
     let controls = {
-      'rotationSpeed': 0.02, // 旋转速度
-      'bouncingSpeed': 0.03 // 弹跳速度
+      rotationSpeed: 0.02, // 旋转速度
+      bouncingSpeed: 0.03, // 弹跳速度
+      lightIntensity: 1
     }
     const gui = new dat.GUI({autoPlace: false})
-    gui.domElement.id = 'abc'
-    document.getElementById('toolbar').appendChild(gui.domElement)
     gui.add(controls, 'rotationSpeed', 0, 0.5)
     gui.add(controls, 'bouncingSpeed', 0, 0.8)
+    gui.add(controls, 'lightIntensity', 0, 15)
+
+    gui.domElement.id = 'abc'
+    document.getElementById('toolbar').appendChild(gui.domElement)
 
 
     // AxesHelper：辅助观察的坐标系
@@ -80,7 +73,22 @@ export default () => {
     camera.position.set(-30, 30, 60)
     camera.lookAt(10, 4, 3)
 
+    // 基础光源
+    let ambientLight = new THREE.AmbientLight('#fff', controls.lightIntensity)
+    scene.add(ambientLight)
+
+    let spotLight = new THREE.SpotLight('#eee')
+    spotLight.position.set(-10, 10, 10)
+    spotLight.castShadow = true
+    spotLight.shadow.mapSize = new THREE.Vector2(1024, 1024)
+    spotLight.shadow.camera.near = 40
+    spotLight.shadow.camera.far = 150
+
+    spotLight.lookAt(0,0,0)
+    scene.add(spotLight)
+
     let gap = 0
+    console.log({cube})
     // 渲染函数
     function render() {
       renderer.render(scene, camera) //执行渲染操作
