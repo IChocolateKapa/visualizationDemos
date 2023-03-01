@@ -17,30 +17,7 @@ export default () => {
     canvas.appendChild(renderer.domElement)
 
     let scene = new THREE.Scene()
-
-    // 创建立方体
-    let geometry = new THREE.BoxGeometry(10, 10, 10)
-    const material = new THREE.MeshLambertMaterial({
-      color: 'pink',
-      opacity: 0.9
-    })
-    const cube = new THREE.Mesh(geometry, material)
-    cube.position.set(-8, 3, 30)
-    cube.castShadow = true
-    scene.add(cube)
-
-
-    // 创建一个球体
-    const sphereGeometry = new THREE.SphereGeometry(10, 10, 10)
-    const sphereMaterial = new THREE.MeshLambertMaterial({
-      color: 'red',
-      opacity: 0.8
-    })
-    const sphere = new THREE.Mesh(sphereGeometry, sphereMaterial)
-    sphere.position.set(2, 4, 2)
-    // 开启投影
-    sphere.castShadow = true
-    scene.add(sphere)
+    let gap = 0
 
     // 创建地面
     let planeGeometry = new THREE.PlaneGeometry(200, 200)
@@ -51,6 +28,16 @@ export default () => {
     plane.receiveShadow = true
     scene.add(plane)
 
+    // 创建一个球体
+    const sphereGeometry = new THREE.SphereGeometry(10, 20, 20)
+    const sphereMaterial = new THREE.MeshLambertMaterial({
+      color: 'gray'
+    })
+    const sphere = new THREE.Mesh(sphereGeometry, sphereMaterial)
+    sphere.position.set(2, 4, 2)
+    // 开启投影
+    sphere.castShadow = true
+    scene.add(sphere)
 
     // 保存希望被GUI改变的属性
     let controls = {
@@ -58,14 +45,32 @@ export default () => {
       bouncingSpeed: 0.03, // 弹跳速度
       lightIntensity: 1
     }
+    let controlFunc = new function() {
+      this.addNewCube = function() {
+        // 创建立方体
+        let wh = Math.floor(Math.random() * 15)
+        let geometryT = new THREE.BoxGeometry(wh, wh, wh)
+        let colors = ['pink', 'red', 'blue', 'purple', 'orange']
+        let rk = Math.floor(Math.random() * (colors.length - 1))
+        const materialT = new THREE.MeshLambertMaterial({
+          color: colors[rk],
+          opacity: 0.9
+        })
+        const cubeT = new THREE.Mesh(geometryT, materialT)
+        let random = Math.random() * 40;
+        cubeT.position.set(-wh + random, wh + random, random)
+        cubeT.castShadow = true
+        scene.add(cubeT)
+      }
+    }
     const gui = new dat.GUI({autoPlace: false})
     gui.add(controls, 'rotationSpeed', 0, 0.5)
     gui.add(controls, 'bouncingSpeed', 0, 0.8)
     gui.add(controls, 'lightIntensity', 0, 15)
+    gui.add(controlFunc, 'addNewCube')
 
     gui.domElement.id = 'abc'
     document.getElementById('toolbar').appendChild(gui.domElement)
-
 
     // AxesHelper：辅助观察的坐标系
     const axesHelper = new THREE.AxesHelper(250)
@@ -89,18 +94,21 @@ export default () => {
     spotLight.lookAt(0,0,0)
     scene.add(spotLight)
 
-    let gap = 0
-    console.log({cube})
     // 渲染函数
     function render() {
       renderer.render(scene, camera) //执行渲染操作
-      cube.rotation.x += controls.rotationSpeed
-      cube.rotation.y += controls.rotationSpeed
-      cube.rotation.z += controls.rotationSpeed
+      scene.traverse(function (obj) {
+        if (obj instanceof THREE.Mesh && obj !== plane) {
+          obj.rotation.x += controls.rotationSpeed
+          obj.rotation.y += controls.rotationSpeed
+          obj.rotation.z += controls.rotationSpeed
 
-      gap += controls.bouncingSpeed
-      cube.position.x = 25 + (Math.sin(gap)) * 20
-      cube.position.y = 10 + (Math.abs((Math.cos(gap)) * 30))
+          gap += controls.bouncingSpeed
+          obj.position.x = 25 + (Math.sin(gap)) * 20
+          obj.position.y = 10 + (Math.abs((Math.cos(gap)) * 30))
+        }
+      })
+
 
       sphere.position.x = 5 + (Math.cos(gap)) * 50
       sphere.position.y = 2 + (Math.abs((Math.sin(gap)) * 40))
