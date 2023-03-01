@@ -62,8 +62,6 @@ export default () => {
     gui.add(controls, 'rotationSpeed', 0, 0.5)
     gui.add(controls, 'bouncingSpeed', 0, 0.8)
     gui.add(controls, 'lightIntensity', 0, 15)
-
-    gui.domElement.id = 'abc'
     document.getElementById('toolbar').appendChild(gui.domElement)
 
 
