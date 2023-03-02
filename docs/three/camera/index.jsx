@@ -88,8 +88,8 @@ export default () => {
           camera.lookAt(10, 4, 3)
           this.showText = '透视投影相机'
         } else {
-          camera = new THREE.OrthographicCamera(w/4, -w/4, -w/4, w/4)
-          camera.position.set(100, 160, 200)
+          camera = new THREE.OrthographicCamera(-w/4, w/4, w/4, -w/4, 0.1, 1000)
+          camera.position.set(100, 760, 200)
           camera.lookAt(scene.position)
           this.showText = '正交投影相机'
         }
@@ -115,10 +115,15 @@ export default () => {
     spotLight.lookAt(0,0,0)
     scene.add(spotLight)
 
+    let gap = 0
     // 渲染函数
     function render() {
       renderer.render(scene, camera) //执行渲染操作
+      gap += 0.02
+      sphere.position.x = 5 + (Math.cos(gap)) * 50
+      sphere.position.y = 2 + (Math.abs((Math.sin(gap)) * 40))
       requestAnimationFrame(render) //请求再次执行渲染函数render，渲染下一帧
+      camera.lookAt(sphere.position)
     }
 
     render()
