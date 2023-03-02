@@ -4,8 +4,8 @@
 import React, {useEffect} from 'react'
 import * as THREE from 'three'
 import * as dat from 'dat.gui';
+import {OrbitControls} from 'three/addons/controls/OrbitControls.js'
 import './index.css'
-import {add} from 'husky'
 
 export default () => {
   useEffect(() => {
@@ -77,6 +77,12 @@ export default () => {
     camera.position.set(-100, 60, 150)
     camera.lookAt(10, 4, 3)
 
+    let cameraHelper = new THREE.CameraHelper(camera)
+    scene.add(cameraHelper)
+
+    let orbit = new OrbitControls(camera, renderer.domElement)
+    scene.add(orbit)
+
 
     const gui = new dat.GUI({autoPlace: false})
     let control = new function () {
@@ -93,6 +99,7 @@ export default () => {
           camera.lookAt(scene.position)
           this.showText = '正交投影相机'
         }
+        orbit = new OrbitControls(camera, renderer.domElement)
       }
     }
     gui.add(control, 'showText').listen()
@@ -123,7 +130,8 @@ export default () => {
       sphere.position.x = 5 + (Math.cos(gap)) * 50
       sphere.position.y = 2 + (Math.abs((Math.sin(gap)) * 40))
       requestAnimationFrame(render) //请求再次执行渲染函数render，渲染下一帧
-      camera.lookAt(sphere.position)
+      // camera.lookAt(sphere.position)
+      orbit.update()
     }
 
     render()

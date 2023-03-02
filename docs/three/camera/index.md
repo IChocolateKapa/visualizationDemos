@@ -2,7 +2,9 @@
 order: 2
 ---
 
-# 相机
+# 相机 + OrbitControl
+
+<code src="./index.jsx" compact="true"></code>
 
 ## 相机分类
 
@@ -26,4 +28,3 @@ PerspectiveCamera(fov, aspect, near, far)
 
 ![img.png](../assets/img3.png)
 
-<code src="./index.jsx" compact="true"></code>
